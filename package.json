@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon -r dotenv/config --experimental-json-modules src/server.js"
   },
   "type": "module",
   "author": "gaurav",
@@ -12,5 +12,10 @@
   "devDependencies": {
     "nodemon": "^3.1.7",
     "prettier": "^3.4.1"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.6",
+    "express": "^4.21.1",
+    "mongoose": "^8.8.3"
   }
 }
