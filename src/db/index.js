@@ -17,4 +17,4 @@ const DB_CONNECT = async () => {
     }
 }
 
-export default DB_CONNECT
+export {DB_CONNECT}
