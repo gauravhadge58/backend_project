@@ -10,6 +10,21 @@ dotenv.config({path:'./env'})
 
 
 ConnectionInstance()
+.then(()=>{
+    try {
+        app.listen(process.env.PORT || 8000,()=>{
+            console.log(`Server listening at PORT: ${process.env.PORT}`)
+        })
+
+    } catch (error) {
+        console.log("Error: ",error)
+        throw error
+    }
+    
+})
+.catch((error)=>{
+    console.log("MongoDb connection failed !!:",error)
+})
 
 
 
