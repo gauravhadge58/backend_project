@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
-import { jwt } from "jsonwebtoken";
+import pkg from "jsonwebtoken";
 import bcrypt from "bcrypt";
+
+const {jwt} = pkg;
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -18,7 +20,7 @@ const userSchema = new mongoose.Schema({
         lowercase: true,
         trim:true,
     },
-    fullname: {
+    fullName: {
         type: String,
         required: true,
         trim:true,
