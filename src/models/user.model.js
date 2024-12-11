@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
-import pkg from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-const {jwt} = pkg;
+
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -62,18 +62,28 @@ userSchema.methods.isPasswordCorrect = async function(password){
 }
 
 userSchema.methods.generateAccessToken = function(){
-    return jwt.sign(
+    // console.log("Generating Access Token");
+    // console.log("Calling generateAccessToken for user: ", this.username);
+
+    const temp = jwt.sign(
         {
             _id: this._id,
             email: this.email,
             username: this.username,
-            fullname: this.fullname
+            fullname: this.fullName
         },
         process.env.ACCESS_TOKEN_SECRET,
         {
             expiresIn: process.env.ACCESS_TOKEN_EXPIRY
         }
     )
+
+    // console.log("Generated acecss token: ",temp);
+    // console.log("ACCESS_TOKEN_SECRET: ", process.env.ACCESS_TOKEN_SECRET);
+    // console.log("ACCESS_TOKEN_EXPIRY: ", process.env.ACCESS_TOKEN_EXPIRY);
+
+
+    return temp
 }
 
 userSchema.methods.generateRefreshToken = function(){
