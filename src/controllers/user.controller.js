@@ -3,7 +3,7 @@ import {ApiError} from "../utils/ApiError.js";
 import {User} from "../models/user.model.js"
 import {uploadOnCloudinary} from "../utils/cloudinary.js"
 import {ApiResponse} from "../utils/ApiResponse.js"
-import { jwt } from "jsonwebtoken";
+import  jwt  from "jsonwebtoken";
 import mongoose from "mongoose";
 
 const generateAccessAndRefreshTokens = async(userId)=>{
@@ -175,8 +175,8 @@ const logoutUser = asyncHandler(async (req,res)=>{
     await User.findByIdAndUpdate(
         req.user._id,
         {
-            $set:{
-                refreshToken: undefined
+            $unset:{
+                refreshToken: 1
             }
         },{
             new: true
@@ -299,9 +299,11 @@ const getCurrentUser = asyncHandler(async(req,res)=>{
     return res
     .status(200)
     .json(
+        new ApiResponse(
         200,
         req.user,
         "current user fetched successfully"
+        )
     )
 })
 
@@ -408,11 +410,11 @@ const getCurrentUserProfile = asyncHandler(async(req,res)=>{
                     $size: "$subscribers"
                 },
                 channelssubscriberToCount: {
-                    $size: "subscribedTo"
+                    $size: "$subscribedTo"
                 },
                 isSubscribed:{
                     $cond: {
-                        if: {$in: [req.user?._id, "subscribers.subscriber"]},
+                        if: {$in: [req.user?._id, "$subscribers.subscriber"]},
                         then: true,
                         else: false
 
@@ -494,7 +496,7 @@ const getWatchHistory= asyncHandler(async (req,res) => {
     )
 })
 
-export {registerUser, loginUser, logoutUser,refreshAccessToken,changeCurrentPassword,getCurrentUser,updateAccountDetails,updateUserAvatar,updateUserCoverImage,getCurrentUser,getCurrentUserProfile,getWatchHistory }
+export {registerUser, loginUser, logoutUser,refreshAccessToken,changeCurrentPassword,getCurrentUser,updateAccountDetails,updateUserAvatar,updateUserCoverImage,getCurrentUserProfile,getWatchHistory }
 
 
 
